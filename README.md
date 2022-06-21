@@ -1,1 +1,1 @@
-# 3d-test-shooter
+# 3D platformer game prototype by Unit
