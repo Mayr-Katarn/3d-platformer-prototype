@@ -1,7 +1,7 @@
 using System;
 
 [Serializable]
-public enum ButtonType
+public enum MainMenuButtonType
 {
     Start = 0,
     Options = 1,
