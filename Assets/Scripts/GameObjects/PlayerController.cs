@@ -26,32 +26,33 @@ public class PlayerController : MonoBehaviour
         float moveDirection = Input.GetAxis("Horizontal");
         float aimHeight = Input.GetAxis("Vertical");
         float atack = Input.GetAxis("Fire1");
-
-        transform.Translate(_moveSpeed * moveDirection * Time.deltaTime * Vector3.right);
+        Vector3 translation = moveDirection > 0 ? Vector3.right : Vector3.left;
+        transform.Translate(_moveSpeed * moveDirection * Time.deltaTime * translation);
 
         //Debug.Log(aimHeight);
-        //UpdateMovementAnimation(1);
         UpdateMovementAnimation(moveDirection);
-        UpdateAimAnimation(aimHeight);
+        //UpdateAimAnimation(aimHeight);
         Fire(atack);
-        SetLookSide(moveDirection);
+
+        SetBodyOrientation(moveDirection);
     }
 
-    private void SetLookSide(float direction)
+    private void SetBodyOrientation(float direction)
     {
-        float x = transform.localScale.x;
-        float y = transform.localScale.y;
-        float z = transform.localScale.z;
+        float x = transform.localEulerAngles.x;
+        float y = transform.localEulerAngles.y;
+        float z = transform.localEulerAngles.z;
 
-        if (direction > 0 && transform.localScale.x < 0)
+        if (direction > 0 && y > 0)
         {
-            transform.localScale = new Vector3(Mathf.Abs(x), y, z);
+            transform.localEulerAngles = new Vector3(x, 0, z);
         }
-        else if (direction < 0 && transform.localScale.x > 0)
+        else if (direction < 0 && y < 180)
         {
-            transform.localScale = new Vector3(x * -1, y, z);
+            transform.localEulerAngles = new Vector3(x, 180, z);
         }
     }
+
 
     private void UpdateMovementAnimation(float moveDirection)
     {
@@ -67,6 +68,6 @@ public class PlayerController : MonoBehaviour
     {
         bool isAtacking = atack == 1;
         _animator.SetBool("isAtacking", isAtacking);
-        _animator.SetLayerWeight(_animator.GetLayerIndex("Aiming"), atack);
+        //_animator.SetLayerWeight(_animator.GetLayerIndex("Aiming"), atack);
     }
 }
